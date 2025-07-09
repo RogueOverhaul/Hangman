@@ -7,22 +7,25 @@ def start_game():
     incorrect_tries = 0
     correct_letters = []
     while True:
-        if incorrect_tries < 3:
+        if incorrect_tries < attempts:
             if word != current_word:
                 print(current_word)
                 print(f'Tried letters: {tried_letters}')
-                print(f'You have {3 - incorrect_tries} attempts left')
+                print(f'You have {attempts - incorrect_tries} attempts left')
                 letter = input('Enter a letter: ')
-                if letter in word:
-                    print(f'Correct! {letter} is in the word.')
-                    correct_letters.append(letter)
+                if letter.isalpha() and len(letter) == 1:
+                    if letter in word:
+                        print(f'Correct! {letter} is in the word.')
+                        correct_letters.append(letter)
+                    else:
+                        print(f'Sorry! {letter} is not in the word.')
+                        incorrect_tries += 1
+                    for i in range(len(word)):
+                        if letter == word[i]:
+                            current_word = current_word[:i] + word[i] + current_word[i + 1:]
+                    tried_letters.append(letter)
                 else:
-                    print(f'Sorry! {letter} is not in the word.')
-                    incorrect_tries += 1
-                for i in range(len(word)):
-                    if letter == word[i]:
-                        current_word = current_word[:i] + word[i] + current_word[i + 1:]
-                tried_letters.append(letter)
+                    print(f'-INVALID CHARACTER-')
             else:
                 print(f'Congratulations! {current_word} is the hidden word! You won!')
                 break
@@ -79,17 +82,18 @@ while True:
     else:
         if number == "1":
             word = rnd.choice(easy_words)
+            attempts = 8
             print("Level easy")
             start_game()
             break
-
         elif number == "2":
             word = rnd.choice(medium_words)
+            attempts = 6
             print("Level medium")
             start_game()
-
         elif number == "3":
             word = rnd.choice(hard_words)
+            attempts = 4
             print("Level hard")
             start_game()
             break
